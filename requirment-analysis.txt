@@ -1,0 +1,20 @@
+user
+tour
+review
+location
+booking
+
+
+
+2 way referancing
+
+{
+  id:1
+  name:khaled
+  
+}
+
+relation of database =>
+1.one to one
+2.one to many / many to one
+3.many to many

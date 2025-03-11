@@ -1,32 +1,25 @@
 import express, { Application, Request, Response } from "express";
+import cors from "cors";
 
 const app: Application = express();
 
-app.get("/", (req, res) => {
+// Middleware
+app.use(cors());
+app.use(express.json()); // Add this to parse JSON request bodies
+
+// Define the userRoute
+const userRoute = express.Router();
+
+// Mount the userRoute at /api/v1/users
+app.use("/api/v1/users", userRoute);
+
+// Root route
+app.get("/", (req: Request, res: Response) => {
   res.status(200).json({
     success: true,
-    message: "Welcome to our murir tin tour&travel ",
+    message: "Welcome to our Murir Tin Tour & Travel",
   });
 });
 
-app.get("/api/v1/users", (req: Request, res: Response) => {
-  const users = [
-    {
-      id: 1,
-      name: "Khaled",
-      email: "nai@gmail.com",
-    },
-    {
-      id: 2,
-      name: "mitul",
-      email: "asse@gmail.com",
-    },
-  ];
-
-  res.status(200).json({
-    success: true,
-    message: "data creat successfully",
-    data: users,
-  });
-});
+// Export the app (optional, if this is part of a larger application)
 export default app;
