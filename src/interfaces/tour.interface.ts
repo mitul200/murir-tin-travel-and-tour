@@ -12,4 +12,5 @@ interface ITour {
   locations: string[];
   slag: string;
 }
+
 export { ITour };
