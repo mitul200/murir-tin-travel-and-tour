@@ -1,6 +1,8 @@
 import express, { Application, Request, Response } from "express";
 import cors from "cors";
 import { userRouter } from "./routes/user.route";
+import { tourRouter } from "./routes/tour.route";
+import { reviewRouter } from "./routes/review.route";
 
 const app: Application = express();
 
@@ -13,6 +15,8 @@ app.use(express.json()); // Add this to parse JSON request bodies
 
 // Mount the userRoute at /api/v1/users
 app.use("/api/v1/users", userRouter);
+app.use("/api/v1/tours", tourRouter);
+app.use("/api/v1/reviews", reviewRouter);
 
 // Root route
 app.get("/", (req: Request, res: Response) => {
