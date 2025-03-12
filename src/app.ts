@@ -1,5 +1,6 @@
 import express, { Application, Request, Response } from "express";
 import cors from "cors";
+import { userRouter } from "./routes/user.route";
 
 const app: Application = express();
 
@@ -8,10 +9,10 @@ app.use(cors());
 app.use(express.json()); // Add this to parse JSON request bodies
 
 // Define the userRoute
-const userRoute = express.Router();
+// const userRoute = express.Router();
 
 // Mount the userRoute at /api/v1/users
-app.use("/api/v1/users", userRoute);
+app.use("/api/v1/users", userRouter);
 
 // Root route
 app.get("/", (req: Request, res: Response) => {

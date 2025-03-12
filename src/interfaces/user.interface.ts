@@ -8,3 +8,10 @@ interface IUser {
 }
 
 export { IUser };
+
+
+// mongodb+srv://<db_username>:<db_password>@cluster0.bsnes.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0  
+
+// murirtin
+
+// murirtin123
