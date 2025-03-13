@@ -69,6 +69,12 @@ tourSchema.virtual("durationDay").get(function () {
   return this.durationHours / 24;
 });
 
+tourSchema.virtual("reviews", {
+  ref: "Review",
+  foreignField: "tour",
+  localField: "_id",
+});
+
 tourSchema.pre("save", function (next) {
   this.slag = slugify(this.name, { lower: true });
   next();
