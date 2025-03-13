@@ -9,7 +9,7 @@ interface ITour {
   imgCover: string;
   image: string[];
   createdAt: Date;
-  startDate: Date[];
+  startDates: Date[];
   startLoaction: string;
   locations: string[];
   slag: string;

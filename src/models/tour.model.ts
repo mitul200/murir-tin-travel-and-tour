@@ -41,7 +41,7 @@ const tourSchema = new Schema<ITour, TTourModel, ITourMethods>(
       default: Date.now(),
       select: false, // Hide this field from query results
     },
-    startDate: {
+    startDates: {
       type: [Date],
       required: [true, "A tour must have start dates"],
     },
@@ -79,23 +79,56 @@ tourSchema.methods.getNextNearestStartDateAndEndDate = function (): {
   estimatedEndDate: Date | null;
 } {
   const today = new Date();
-  const futureDates = this.startDate.filter((startDate: Date) => {
-    return startDate > today;
-  });
+
+  // Use the correct field: `startDate` instead of `startDates`
+  const futureDates = this.startDates.filter(
+    (startDate: Date) => startDate > today
+  );
+  // If there are no future dates, return null for both values
+  if (futureDates.length === 0) {
+    return {
+      nearestStartDate: null,
+      estimatedEndDate: null,
+    };
+  }
+
+  // Sort future dates in ascending order
   futureDates.sort((a: Date, b: Date) => a.getTime() - b.getTime());
+
+  // Get the nearest start date
   const nearestStartDate = futureDates[0];
+
+  // Calculate the estimated end date
   const estimatedEndDate = new Date(
     nearestStartDate.getTime() + this.durationHours * 60 * 60 * 1000
   );
+
   return {
     nearestStartDate,
     estimatedEndDate,
   };
 };
+
+// tourSchema.methods.getNextNearestStartDateAndEndDate = function (): {
+//   nearestStartDate: Date | null;
+//   estimatedEndDate: Date | null;
+// } {
+//   const today = new Date();
+//   const futureDates = this.startDates.filter((startDate: Date) => {
+//     return startDate > today;
+//   });
+//   futureDates.sort((a: Date, b: Date) => a.getTime() - b.getTime());
+
+//   const nearestStartDate = futureDates[0];
+//   const estimatedEndDate = new Date(
+//     nearestStartDate.getTime() + this.durationHours * 60 * 60 * 1000
+//   );
+//   return {
+//     nearestStartDate,
+//     estimatedEndDate,
+//   };
+// };
 // Create the Mongoose model
 const Tour = model<ITour, TTourModel>("Tour", tourSchema);
 
 export default Tour;
-function startDate(value: Date, index: number, array: Date[]): value is Date {
-  throw new Error("Function not implemented.");
-}
