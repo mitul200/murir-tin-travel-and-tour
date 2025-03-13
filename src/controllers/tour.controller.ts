@@ -66,6 +66,23 @@ const updateTour = async (req: Request, res: Response) => {
     });
   }
 };
+const getNextSchedule = async (req: Request, res: Response) => {
+  try {
+    const id = req.params.id;
+    const result = await TourServices.getNextScheduleService(id);
+    res.status(200).json({
+      success: true,
+      message: "Nearest tour get secussfully",
+      data: result,
+    });
+  } catch (error: any) {
+    res.status(500).json({
+      success: false,
+      message: error.message || "Something wants wrong !!",
+    });
+  }
+};
+
 const deleteTour = async (req: Request, res: Response) => {
   try {
     const id = req.params.id;
@@ -88,4 +105,5 @@ export const TourController = {
   deleteTour,
   updateTour,
   getSingletour,
+  getNextSchedule,
 };

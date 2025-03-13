@@ -32,10 +32,20 @@ const deleteTourService = async (id: string): Promise<ITour | null> => {
   return result;
 };
 
+const getNextScheduleService = async (id: string): Promise<any> => {
+  const tour = await Tour.findById(id);
+  const nextSchedule = tour?.getNextNearestStartDateAndEndDate();
+  return {
+    tour,
+    nextSchedule,
+  };
+};
+
 export const TourServices = {
   creatTour,
   tourUpdateService,
   getSingleData,
   getAlltours,
   deleteTourService,
+  getNextScheduleService,
 };
