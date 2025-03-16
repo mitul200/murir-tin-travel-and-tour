@@ -1,4 +1,4 @@
-import { Schema } from "mongoose";
+import { Model, Schema } from "mongoose";
 
 interface IReview {
   review: string;
@@ -8,4 +8,8 @@ interface IReview {
   user: Schema.Types.ObjectId;
 }
 
-export { IReview };
+interface IReviewModel extends Model<IReview> {
+  calcAVGRating(): Promise<void>;
+}
+
+export { IReview, IReviewModel };

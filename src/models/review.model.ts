@@ -1,5 +1,6 @@
-import { model, Schema } from "mongoose";
-import { IReview } from "../interfaces/review.interface";
+import mongoose, { model, Schema } from "mongoose";
+import { IReview, IReviewModel } from "../interfaces/review.interface";
+import Tour from "./tour.model";
 
 // Create the Mongoose schema
 const reviewSchema = new Schema<IReview>({
@@ -32,7 +33,33 @@ const reviewSchema = new Schema<IReview>({
 
 reviewSchema.index({ tour: 1, user: 1 }, { unique: true });
 
+reviewSchema.statics.calcAVGRating = async function (
+  tourId: mongoose.Types.ObjectId
+) {
+  const stats = await this.aggregate([
+    {
+      $match: tourId,
+    },
+    {
+      $group: {
+        _id: "$tour",
+        numberOfRatings: { $sum: 1 },
+        avgRatings: { $avg: "$rating" },
+      },
+    },
+  ]);
+
+  if (stats.length > 0) {
+    await Tour.findByIdAndUpdate(tourId, {
+      ratingAvg: stats[0].numberOfRatings,
+      ratingQuantity: stats[0].avgRating,
+    })
+  }else{
+    await Tour.findByIdAndUpdate
+  }
+};
+
 // Create the Mongoose model
-const Review = model<IReview>("Review", reviewSchema);
+const Review = model<IReview, IReviewModel>("Review", reviewSchema);
 
 export default Review;
