@@ -18,7 +18,7 @@ const creatTour = async (req: Request, res: Response,next:NextFunction) => {
 const getAlltours = async (req: Request, res: Response,next:NextFunction) => {
   try {
     const result = await TourServices.getAlltours();
-    throw new Error("something is very very wrong ")
+    // throw new Error("something is very very wrong ")
     res.status(200).json({
       success: true,
       message: "tours get successfully",
