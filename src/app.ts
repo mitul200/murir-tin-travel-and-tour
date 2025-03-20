@@ -3,7 +3,9 @@ import cors from "cors";
 import { userRouter } from "./routes/user.route";
 import { tourRouter } from "./routes/tour.route";
 import { reviewRouter } from "./routes/review.route";
-import notFound from "./controllers/notFound.controller";
+ 
+import globalErrorHandler from "./middlewares/globalErrorHandler";
+import notFound from "./middlewares/notFound";
 
 const app: Application = express();
 
@@ -27,31 +29,11 @@ app.get("/", (req: Request, res: Response) => {
   });
 });
 
-
-
-// app.use((err:any, req:Request, res:Response, next:NextFunction)=>{
-//   const statusCode = err.statusCode || 500
-//   const message = err.message ||"Somethigs wants wrong !!"
-
-//   return res.status(statusCode).json({
-//     success:false,
-//     message:message,
-//     error:err
-//   })
-// })
-
-app.use((err:any, req: Request, res: Response, next: NextFunction) => {
-  const statusCode = err.statusCode || 500;
-  const message = err.message || "Something went wrong!";
-
-  return res.status(statusCode).json({
-      success: false,
-      message: message,
-      error: err,
-  });
-});
-
+// 404 not found route 
 app.use(notFound)
+
+// Global error handler 
+app.use(globalErrorHandler);
 
 // Export the app (optional, if this is part of a larger application)
 export default app;

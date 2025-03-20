@@ -1,7 +1,7 @@
-import { Request, Response } from "express";
+import { NextFunction, Request, Response } from "express";
 import { TourServices } from "../services/tour.service";
 
-const creatTour = async (req: Request, res: Response) => {
+const creatTour = async (req: Request, res: Response,next:NextFunction) => {
   try {
     const tourData = req.body;
     const result = await TourServices.creatTour(tourData);
@@ -11,29 +11,24 @@ const creatTour = async (req: Request, res: Response) => {
       data: result,
     });
   } catch (error: any) {
-    res.status(500).json({
-      success: false,
-      message: error.message || "Something wants wrong !!",
-    });
+    next(error)
   }
 };
 
-const getAlltours = async (req: Request, res: Response) => {
+const getAlltours = async (req: Request, res: Response,next:NextFunction) => {
   try {
     const result = await TourServices.getAlltours();
+    throw new Error("something is very very wrong ")
     res.status(200).json({
       success: true,
       message: "tours get successfully",
       data: result,
     });
   } catch (error: any) {
-    res.status(500).json({
-      success: false,
-      message: error.message || "Something wants wrong !!",
-    });
+     next(error)
   }
 };
-const getSingletour = async (req: Request, res: Response) => {
+const getSingletour = async (req: Request, res: Response,next:NextFunction) => {
   try {
     const id = req.params.id;
     const result = await TourServices.getSingleData(id);
@@ -43,13 +38,10 @@ const getSingletour = async (req: Request, res: Response) => {
       data: result,
     });
   } catch (error: any) {
-    res.status(500).json({
-      success: false,
-      message: error.message || "Something wants wrong !!",
-    });
+    next(error)
   }
 };
-const updateTour = async (req: Request, res: Response) => {
+const updateTour = async (req: Request, res: Response,next:NextFunction) => {
   try {
     const tourData = req.body;
     const id = req.params.id;
@@ -60,13 +52,10 @@ const updateTour = async (req: Request, res: Response) => {
       data: result,
     });
   } catch (error: any) {
-    res.status(500).json({
-      success: false,
-      message: error.message || "Something wants wrong !!",
-    });
+    next(error)
   }
 };
-const getNextSchedule = async (req: Request, res: Response) => {
+const getNextSchedule = async (req: Request, res: Response,next:NextFunction) => {
   try {
     const id = req.params.id;
     const result = await TourServices.getNextScheduleService(id);
@@ -76,14 +65,11 @@ const getNextSchedule = async (req: Request, res: Response) => {
       data: result,
     });
   } catch (error: any) {
-    res.status(500).json({
-      success: false,
-      message: error.message || "Something wants wrong !!",
-    });
+     next(error)
   }
 };
 
-const deleteTour = async (req: Request, res: Response) => {
+const deleteTour = async (req: Request, res: Response,next:NextFunction) => {
   try {
     const id = req.params.id;
     await TourServices.deleteTourService(id);
@@ -92,10 +78,7 @@ const deleteTour = async (req: Request, res: Response) => {
       message: "Tour deleted successfully !!",
     });
   } catch (error: any) {
-    res.status(500).json({
-      success: false,
-      message: error.message || "Something wants wrong !!",
-    });
+     next(error)
   }
 };
 
