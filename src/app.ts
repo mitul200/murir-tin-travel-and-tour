@@ -1,8 +1,9 @@
-import express, { Application, Request, Response } from "express";
+import express, { Application, NextFunction, Request, Response } from "express";
 import cors from "cors";
 import { userRouter } from "./routes/user.route";
 import { tourRouter } from "./routes/tour.route";
 import { reviewRouter } from "./routes/review.route";
+import notFound from "./controllers/notFound.controller";
 
 const app: Application = express();
 
@@ -25,6 +26,32 @@ app.get("/", (req: Request, res: Response) => {
     message: "Welcome to our Murir Tin Tour & Travel",
   });
 });
+
+
+
+// app.use((err:any, req:Request, res:Response, next:NextFunction)=>{
+//   const statusCode = err.statusCode || 500
+//   const message = err.message ||"Somethigs wants wrong !!"
+
+//   return res.status(statusCode).json({
+//     success:false,
+//     message:message,
+//     error:err
+//   })
+// })
+
+app.use((err:any, req: Request, res: Response, next: NextFunction) => {
+  const statusCode = err.statusCode || 500;
+  const message = err.message || "Something went wrong!";
+
+  return res.status(statusCode).json({
+      success: false,
+      message: message,
+      error: err,
+  });
+});
+
+app.use(notFound)
 
 // Export the app (optional, if this is part of a larger application)
 export default app;
