@@ -1,11 +1,10 @@
 import express, { Application, NextFunction, Request, Response } from "express";
 import cors from "cors";
-import { userRouter } from "./routes/user.route";
-import { tourRouter } from "./routes/tour.route";
-import { reviewRouter } from "./routes/review.route";
+ 
  
 import globalErrorHandler from "./middlewares/globalErrorHandler";
 import notFound from "./middlewares/notFound";
+import globalRoutes from "./routes";
 
 const app: Application = express();
 
@@ -17,9 +16,9 @@ app.use(express.json()); // Add this to parse JSON request bodies
 // const userRoute = express.Router();
 
 // Mount the userRoute at /api/v1/users
-app.use("/api/v1/users", userRouter);
-app.use("/api/v1/tours", tourRouter);
-app.use("/api/v1/reviews", reviewRouter);
+
+// all routes 
+app.use("/api/v1/",globalRoutes);
 
 // Root route
 app.get("/", (req: Request, res: Response) => {

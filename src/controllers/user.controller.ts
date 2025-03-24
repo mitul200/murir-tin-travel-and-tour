@@ -1,84 +1,78 @@
-import { Request, Response } from "express";
+import { NextFunction, Request, Response } from "express";
 import { UserServices } from "../services/user.service";
+import sendSuccessResponse from "../utiles/sendResponse";
 
-const creatUser = async (req: Request, res: Response) => {
+
+
+const creatUser = async (req: Request, res: Response,next:NextFunction) => {
   try {
     const userData = req.body;
     const result = await UserServices.creatUser(userData);
-    res.status(201).json({
-      success: true,
-      message: "user created successfully",
-      data: result,
-    });
+    sendSuccessResponse(res,{
+      statusCode: 201,
+      status: "success",
+      message: "User created successfully",
+      data: result
+    })
   } catch (error: any) {
-    res.status(500).json({
-      success: false,
-      message: error.message || "Something wants wrong !!",
-    });
+    next()
   }
 };
 
-const getAllusers = async (req: Request, res: Response) => {
+const getAllusers = async (req: Request, res: Response,next:NextFunction) => {
   try {
     const result = await UserServices.getAllusers();
-    res.status(200).json({
-      success: true,
-      message: "users get successfully",
-      data: result,
-    });
+    sendSuccessResponse(res,{
+      statusCode: 200,
+      status: "success",
+      message: "get all users sucessfully",
+      data: result
+    })
   } catch (error: any) {
-    res.status(500).json({
-      success: false,
-      message: error.message || "Something wants wrong !!",
-    });
+    next()
   }
 };
-const getSingleuser = async (req: Request, res: Response) => {
+const getSingleuser = async (req: Request, res: Response,next:NextFunction) => {
   try {
     const id = req.params.id;
     const result = await UserServices.getSingleData(id);
-    res.status(200).json({
-      success: true,
-      message: "Single users get successfully!",
-      data: result,
-    });
+    sendSuccessResponse(res,{
+      statusCode: 200,
+      status: "success",
+      message: "Get single data successfully",
+      data: result
+    })
   } catch (error: any) {
-    res.status(500).json({
-      success: false,
-      message: error.message || "Something wants wrong !!",
-    });
+     next()
   }
 };
-const updateUser = async (req: Request, res: Response) => {
+const updateUser = async (req: Request, res: Response , next:NextFunction) => {
   try {
     const userData = req.body;
     const id = req.params.id;
     const result = await UserServices.userUpdateService(id, userData);
-    res.status(200).json({
-      success: true,
-      message: "user update successfully!",
-      data: result,
-    });
+   sendSuccessResponse(res,{
+     statusCode: 200,
+     status: "success",
+     message: "User update successfully",
+     data: result
+   })
   } catch (error: any) {
-    res.status(500).json({
-      success: false,
-      message: error.message || "Something wants wrong !!",
-    });
+    next()
   }
 };
-const deleteUser = async (req: Request, res: Response) => {
+const deleteUser = async (req: Request, res: Response,next:NextFunction) => {
   try {
     const id = req.params.id;
     await UserServices.deleteUserService(id);
-    res.status(200).json({
-      success: true,
-      message: "User deleted successfully !!",
-    });
+   sendSuccessResponse(res,{
+     statusCode: 200,
+     status: "success",
+     message: "User update successfully",
+     data: undefined
+   })
   } catch (error: any) {
-    res.status(500).json({
-      success: false,
-      message: error.message || "Something wants wrong !!",
-    });
+    next()
   }
 };
 
