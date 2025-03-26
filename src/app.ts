@@ -28,6 +28,8 @@ app.get("/", (req: Request, res: Response) => {
   });
 });
 
+
+
 // 404 not found route 
 app.use(notFound)
 

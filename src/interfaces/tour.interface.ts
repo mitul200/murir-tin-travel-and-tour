@@ -6,6 +6,7 @@ interface ITour {
   ratingAvg: number;
   ratingQuantity: number;
   price: number;
+  avaiableSeat:number
   imgCover: string;
   image: string[];
   createdAt: Date;

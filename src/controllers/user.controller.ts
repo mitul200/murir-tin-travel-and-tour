@@ -15,7 +15,7 @@ const creatUser = async (req: Request, res: Response,next:NextFunction) => {
       data: result
     })
   } catch (error: any) {
-    next()
+    next(error)
   }
 };
 
@@ -29,7 +29,7 @@ const getAllusers = async (req: Request, res: Response,next:NextFunction) => {
       data: result
     })
   } catch (error: any) {
-    next()
+    next(error)
   }
 };
 const getSingleuser = async (req: Request, res: Response,next:NextFunction) => {
@@ -43,7 +43,7 @@ const getSingleuser = async (req: Request, res: Response,next:NextFunction) => {
       data: result
     })
   } catch (error: any) {
-     next()
+     next(error)
   }
 };
 const updateUser = async (req: Request, res: Response , next:NextFunction) => {
@@ -58,7 +58,7 @@ const updateUser = async (req: Request, res: Response , next:NextFunction) => {
      data: result
    })
   } catch (error: any) {
-    next()
+    next(error)
   }
 };
 const deleteUser = async (req: Request, res: Response,next:NextFunction) => {
@@ -72,7 +72,7 @@ const deleteUser = async (req: Request, res: Response,next:NextFunction) => {
      data: undefined
    })
   } catch (error: any) {
-    next()
+    next(error)
   }
 };
 
