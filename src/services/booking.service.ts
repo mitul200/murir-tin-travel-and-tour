@@ -1,9 +1,64 @@
+import mongoose from "mongoose";
 import { IBooking } from "../interfaces/booing.interface";
 import { Booking } from "../models/booking.model";
+import Tour from "../models/tour.model";
 
 const creatBooking = async (bookingData: IBooking): Promise<IBooking> => {
-  const result = await Booking.create(bookingData);
-  return result;
+
+const session = await mongoose.startSession()
+
+session.startTransaction()
+
+try {
+  const booking  = await Booking.create([bookingData],{session})
+
+  if(!booking){
+    throw new Error("booking create is field")
+  }
+
+ const tour =  await Tour.findByIdAndUpdate(booking[0].tour,{
+    $inc:{avaiableSeat:-booking[0].bookedSlot
+    }
+  },{
+    session
+  })
+
+  if(!tour){
+    throw new Error("Something wants wrong in tour")
+  }
+
+  await session.commitTransaction()
+  await session.endSession()
+  return booking[0]
+} catch (error:any) {
+  await session.abortTransaction()
+  await session.endSession()
+  throw new Error(error)
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  // const result = await Booking.create(bookingData);
+
+  // if(!result){
+  //   throw new Error("Booking could not be created")
+  // }
+
+  // Tour.findByIdAndUpdate(result.tour,{
+  //   $inc: {avaiableSeat: -result.bookedSlot}
+  // })
+  // return result;
 };
 
 const getAllbookings = async (): Promise<IBooking[]> => {
